@@ -1,0 +1,36 @@
+{
+  "name": "api-ateway",
+  "version": "0.1.0",
+  "main": "app.js",
+  "license": "MIT",
+  "author": "Wade Hong",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "bufferhelper": "^0.2.1",
+    "compression": "^1.7.3",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.2.0",
+    "maskdata": "^1.0.5",
+    "node-html-parser": "^1.2.20",
+    "request": "^2.88.0",
+    "urlencode": "^1.1.0",
+    "ws": "^7.4.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "eslint": "^5.12.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}

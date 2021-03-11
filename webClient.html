@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  html {
+    color: #000;
+    background: #FFF
+  }
+
+  body,
+  div,
+  dl,
+  dt,
+  dd,
+  ul,
+  ol,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  pre,
+  code,
+  form,
+  fieldset,
+  legend,
+  input,
+  textarea,
+  p,
+  blockquote,
+  th,
+  td {
+    margin: 0;
+    padding: 0
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0
+  }
+
+  fieldset,
+  img {
+    border: 0
+  }
+
+  address,
+  caption,
+  cite,
+  code,
+  dfn,
+  em,
+  strong,
+  th,
+  var {
+    font-style: normal;
+    font-weight: normal
+  }
+
+  ol,
+  ul {
+    list-style: none
+  }
+
+  caption,
+  th {
+    text-align: left
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 100%;
+    font-weight: normal
+  }
+
+  q:before,
+  q:after {
+    content: ''
+  }
+
+  abbr,
+  acronym {
+    border: 0;
+    font-variant: normal
+  }
+
+  sup {
+    vertical-align: text-top
+  }
+
+  sub {
+    vertical-align: text-bottom
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    *font-size: 100%
+  }
+
+  legend {
+    color: #000
+  }
+
+  #yui3-css-stamp.cssreset {
+    display: none
+  }
+
+  .color-gray {
+    color: gray;
+  }
+
+  .chat-section {
+    margin: 20px;
+  }
+
+  #chat-box {
+    border: 1px solid black;
+    width: 300px;
+    height: 500px;
+    padding: 10px;
+  }
+
+  .chat-text {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .chat-text.right-text {
+    text-align: right;
+  }
+
+  .chat-text.left-text {
+    text-align: left;
+  }
+
+  .chat-text.center-text {
+    text-align: center;
+  }
+
+  .send-box {
+    width: 300px;
+    height: 20px;
+    margin-top: 20px;
+  }
+
+  .send-box>input {
+    height: 20px;
+    line-height: 20px;
+    float: left;
+  }
+</style>
+
+<body>
+  <section class="chat-section">
+    <div id="chat-box"></div>
+    <div class="send-box">
+      <input id="chat-text" type="text" placeholder="請輸入發送內容">
+      <button onclick="sendMsg()">發送</button>
+      <button onclick="leaveChat()">離開</button>
+    </div>
+  </section>
+</body>
+<script>
+  let chatBoxDiv = document.getElementById('chat-box')
+  // 判断浏览器是否支持websocket
+  let CreateWebSocket = (() => {
+    return (urlValue) => {
+      if (window.WebSocket) return new WebSocket(urlValue);
+      if (window.MozWebSocket) return new MozWebSocket(urlValue);
+      return false;
+    }
+  })()
+  // 创建一个websocket
+  let webSocket = CreateWebSocket("ws://127.0.0.1:8699/chat")
+  // 监听连接开启
+  webSocket.onopen = (evt) => {
+    // 主动向后台发送数据
+    chatBoxDiv.innerHTML += '<span class="chat-text center-text color-gray">已連線至伺服器</span>'
+  }
+  // 监听websocket通讯
+  webSocket.onmessage = (evt) => {
+    // 这是服务端返回的数据
+    chatBoxDiv.innerHTML += `<span class="chat-text right-text">${evt.data}</span>`
+  }
+  // 监听连接关闭
+  webSocket.onclose = (evt) => {
+    chatBoxDiv.innerHTML += '<span class="chat-text center-text color-gray">已關閉連線</span>'
+  }
+
+  function sendMsg() {
+    let chatText = document.getElementById('chat-text').value
+    chatBoxDiv.innerHTML += `<span class="chat-text left-text">${chatText}</span>`
+    webSocket.send(chatText)
+  }
+
+  function leaveChat() {
+    // 前端主动关闭连接
+    webSocket.close()
+  }
+</script>
+
+</html>
